@@ -103,3 +103,21 @@ prisma.task.delete({ where: { id: id } });
 prisma.task.findMany();
 prisma.task.findUnique({ where: { email: "email@email.io" } });
 ```
+
+## Server Actions
+
+-   asynchronous server functions that can be called directly from your components.
+
+-   typical setup for server state mutations (create, update, delete)
+
+    -   endpoint on the server (api route on Next.js)
+    -   make request from the front-end
+        -   setup form, handle submission, etc.
+
+-   Next.js server actions allow you to mutate server state directly from within a React component by defining server-side logic alongside client-side interactions.
+
+Rules:
+
+-   must be async
+-   add "use server" in function body
+    -   use only in React Server Component

@@ -1,7 +1,13 @@
-import React from "react";
+import TaskForm from "../../components/TaskForm";
+import TaskList from "../../components/TaskList";
 
-function TaskPage() {
-    return <div>TaskPage</div>;
+function TasksPage() {
+    return (
+        <div className="max-w-lg">
+            <TaskForm />
+            <TaskList />
+        </div>
+    );
 }
 
-export default TaskPage;
+export default TasksPage;
