@@ -46,3 +46,60 @@ Benefits:
 -   The width and height attributes are used to infer the correct aspect ratio of image and avoid layout shift from the image loading in. The width and height do not determine the rendered size of the image file.
 -   To safely allow optimizing images, define a list of supported URL patterns in next.config.js. Be as specific as possible to prevent malicious usage.
 -   Restart dev server.
+
+## More Routing
+
+-   Private Folders
+    \_folder
+-   Route Groups
+    (dashboard)/auth/
+    (dashboard)/dashboard/
+    (dashboard)/trend/
+-   Dynamic Routes
+    [...folder] : Catch-all route segment
+    [[...folder]] : Optional catch-all route segment (used by Clerk)
+
+-   create test folder app/\_css
+-   create app/(dashboard)/auth
+    -   the url is just "/auth"
+-   create app/(dashboard)/auth/[sign-in]
+
+## Prisma
+
+-   install prisma vs-code extension
+
+[Prisma sqlite](https://www.prisma.io/docs)
+
+Prisma ORM is a database toolkit that simplifies database access in web applications. It allows developers to interact with databases using a type-safe and auto-generated API, making database operations easier and more secure.
+
+-   Prisma server: A standalone infrastructure component sitting on top of our database.
+-   Prisma client: An auto-generated library that connects to the Prisma server and let's us read, write and stream data in our database. It is used for data access in our application.
+
+```sh
+npm install prisma --save-dev
+npm install @prisma/client
+```
+
+```sh
+npx prisma init
+```
+
+## Prisma Crud
+
+```js
+prisma.task.create({ data: { field: "value" } });
+prisma.task.update({ where: { id: id }, data: { field: "value" } });
+prisma.task.upsert({
+    where: { id: id },
+    update: { field: "value" },
+    create: { field: "value" },
+});
+prisma.task.delete({ where: { id: id } });
+```
+
+### Query Example
+
+```js
+prisma.task.findMany();
+prisma.task.findUnique({ where: { email: "email@email.io" } });
+```
