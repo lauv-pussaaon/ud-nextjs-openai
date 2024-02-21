@@ -164,3 +164,17 @@ Middleware in Next.js is a piece of code that allows you to perform actions befo
 
 -   create middleware.js in the root
 -   by default will be invoked for every route in your project
+
+## Moving Data to Cloud
+
+```sh
+npx prisma db push
+```
+
+## Local Build
+
+-   configure package.json
+
+```json
+    "build": "npx prisma generate && next build"
+```
