@@ -139,3 +139,19 @@ npm install zod
 
 -   using react-hot-toast
 -   create providers.js file in app
+
+## Route Handlers
+
+-   install Thunder Client
+
+Route Handlers allow you to create custom request handlers for a given route using the web request and response APIs.
+
+Setting up
+
+-   in app create folder "api"
+-   in there create folder "tasks" with route.js file
+-   app/api/tasks/route.js
+
+The following HTTP methods are supported: GET, POST, PUT, PATCH, DELETE, HEAD, and OPTIONS. If an unsupported method is called, Next.js will return a 405 method not allowed response.
+
+In addition to supporting native request and response. Next.js extends them with NextRequest and NextResponse to provide convenient helpers for advanced use cases.
