@@ -155,3 +155,12 @@ Setting up
 The following HTTP methods are supported: GET, POST, PUT, PATCH, DELETE, HEAD, and OPTIONS. If an unsupported method is called, Next.js will return a 405 method not allowed response.
 
 In addition to supporting native request and response. Next.js extends them with NextRequest and NextResponse to provide convenient helpers for advanced use cases.
+
+## Middleware
+
+[Docs](https://nextjs.org/docs/app/building-your-application/routing/middleware)
+
+Middleware in Next.js is a piece of code that allows you to perform actions before a request is completed and modify the response accordingly.
+
+-   create middleware.js in the root
+-   by default will be invoked for every route in your project
