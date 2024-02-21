@@ -28,3 +28,12 @@ export const metadata = {
 ```
 
 ## Clerk - Auth Server
+
+-   Set up Clerk configuration
+-   Set up custom sign-in and sign-up page
+
+## React Icons
+
+```sh
+npm install react-icons --save
+```
