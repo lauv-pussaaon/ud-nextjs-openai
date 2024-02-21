@@ -1,10 +1,10 @@
-import TaskForm from "../../components/TaskForm";
+import TaskFormClient from "../../components/TaskFormClient";
 import TaskList from "../../components/TaskList";
 
 function TasksPage() {
     return (
         <div className="max-w-lg">
-            <TaskForm />
+            <TaskFormClient />
             <TaskList />
         </div>
     );

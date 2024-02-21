@@ -23,6 +23,18 @@ export async function createTask(task) {
     revalidatePath("/tasks");
 }
 
+export async function createTaskServer(prevState, formData) {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const content = formData.get("content");
+    try {
+        await prisma.task.create({ data: { content } });
+        revalidatePath("/tasks");
+        return { message: "success" };
+    } catch (error) {
+        return { error: "error: " + error.message };
+    }
+}
+
 export async function updateTask(id, task) {
     await prisma.task.update({ data: task, where: { id } });
     revalidatePath("/tasks");
