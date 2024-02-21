@@ -121,3 +121,21 @@ Rules:
 -   must be async
 -   add "use server" in function body
     -   use only in React Server Component
+
+## Extra - More User Input Validation Options
+
+-   required attribute a great start
+-   zod library
+
+The Zod library is a TypeScript-first schema declaration and validation library that allows developers to create complex type checks with simple syntax.
+
+[Zod](https://zod.dev)
+
+```sh
+npm install zod
+```
+
+## UI Providers
+
+-   using react-hot-toast
+-   create providers.js file in app

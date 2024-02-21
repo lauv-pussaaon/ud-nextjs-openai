@@ -1,6 +1,7 @@
 "use server";
 
 import prisma from "../utils/db";
+import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -26,12 +27,16 @@ export async function createTask(task) {
 export async function createTaskServer(prevState, formData) {
     await new Promise((resolve) => setTimeout(resolve, 2000));
     const content = formData.get("content");
+    const task = z.object({
+        content: z.string().min(5),
+    });
     try {
+        task.parse({ content });
         await prisma.task.create({ data: { content } });
         revalidatePath("/tasks");
         return { message: "success" };
     } catch (error) {
-        return { error: "error: " + error.message };
+        return { error: error.errors.at(0) };
     }
 }
 

@@ -2,6 +2,8 @@
 
 import { createTaskServer } from "../app/utils/actions";
 import { useFormStatus, useFormState } from "react-dom";
+import { useEffect } from "react";
+import { toast } from "react-hot-toast";
 
 function Button() {
     const { pending } = useFormStatus();
@@ -24,12 +26,17 @@ const initialState = {
 function TaskFormClient() {
     const [state, formAction] = useFormState(createTaskServer, initialState);
 
+    useEffect(() => {
+        if (state.message) {
+            toast.success("Task created successfully");
+        }
+        if (state.error) {
+            toast.error("Failed to create task: " + state.error.message);
+        }
+    }, [state]);
+
     return (
         <form action={formAction}>
-            {state.message && (
-                <p className="mb-2 text-green-300">{state.message}</p>
-            )}
-            {state.error && <p className="mb-2 text-red-300">{state.error}</p>}
             <div className="join w-full">
                 <input
                     type="text"
