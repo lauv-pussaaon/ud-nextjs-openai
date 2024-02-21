@@ -25,7 +25,6 @@ export async function createTask(task) {
 }
 
 export async function createTaskServer(prevState, formData) {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
     const content = formData.get("content");
     const task = z.object({
         content: z.string().min(5),

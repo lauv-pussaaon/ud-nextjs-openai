@@ -178,3 +178,9 @@ npx prisma db push
 ```json
     "build": "npx prisma generate && next build"
 ```
+
+## Force Dynamic
+
+```js
+export const dynamic = "force-dynamic";
+```
