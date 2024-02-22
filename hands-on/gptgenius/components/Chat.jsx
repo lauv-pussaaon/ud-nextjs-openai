@@ -4,9 +4,9 @@ import { generateChatResponse } from "@/app/utils/actions";
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
+import { useForm } from "react-hook-form";
 
 function Chat() {
-    const [text, setText] = useState("");
     const [messages, setMessages] = useState([]);
 
     const { mutate: submitMessage, isPending } = useMutation({
@@ -19,12 +19,13 @@ function Chat() {
         },
     });
 
-    async function handleSubmit(e) {
-        e.preventDefault();
-        const query = { role: "user", content: text };
+    const { register, handleSubmit, reset } = useForm();
+
+    function submitPrompt(formData) {
+        const query = { role: "user", content: formData.prompt };
         submitMessage(query);
         setMessages((prev) => [...prev, query]);
-        setText("");
+        reset();
     }
 
     useEffect(() => {
@@ -54,15 +55,17 @@ function Chat() {
                 );
             })}
             {isPending ? <span className="loading"></span> : null}
-            <form onSubmit={handleSubmit} className="w-full pt-12">
+            <form
+                onSubmit={handleSubmit(submitPrompt)}
+                className="w-full pt-12"
+            >
                 <div className="join w-full">
                     <input
                         type="text"
                         placeholder="Message GeniusGPT"
                         className="input input-bordered join-item w-full"
-                        value={text}
                         required
-                        onChange={(e) => setText(e.target.value)}
+                        {...register("prompt")}
                     />
                     <button
                         className="btn btn-primary join-item"
