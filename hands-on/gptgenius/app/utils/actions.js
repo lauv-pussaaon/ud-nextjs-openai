@@ -1,6 +1,7 @@
 "use server";
 
 import OpenAI from "openai";
+import prisma from "./db";
 import { generate_tour_program_query } from "./prompts";
 
 const openai = new OpenAI({
@@ -47,9 +48,18 @@ export async function generateTourResponse({ city, country }) {
 }
 
 export async function getExistingTour({ city, country }) {
-    return null;
+    return prisma.tour.findUnique({
+        where: {
+            city_country: {
+                city,
+                country,
+            },
+        },
+    });
 }
 
 export async function createNewTour(tour) {
-    return null;
+    return prisma.tour.create({
+        data: tour,
+    });
 }
