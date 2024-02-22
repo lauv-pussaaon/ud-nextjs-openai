@@ -1,20 +1,53 @@
 "use client";
 
-import { submitPrompts } from "@/app/utils/actions";
+import { generateChatResponse } from "@/app/utils/actions";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 function Chat() {
     const [text, setText] = useState("");
+    const [messages, setMessages] = useState([]);
 
-    function handleSubmit(e) {
+    const { mutate: submitMessage, isPending } = useMutation({
+        mutationFn: (query) => generateChatResponse([...messages, query]),
+        onSuccess: (data) => {
+            setMessages((prev) => [...prev, data]);
+        },
+        onError: (error) => {
+            toast.error(error.message);
+        },
+    });
+
+    async function handleSubmit(e) {
         e.preventDefault();
-        submitPrompts(text);
+        const query = { role: "user", content: text };
+        submitMessage(query);
+        setMessages((prev) => [...prev, query]);
         setText("");
     }
 
     return (
         <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]">
-            <form onSubmit={handleSubmit} className="max-w-4xl pt-12">
+            <div>
+                <h1 className="text-4xl font-medium">Conversation</h1>
+            </div>
+            {messages.map(({ role, content }, index) => {
+                const avatar = role === "user" ? "👨‍🚀" : "🤖";
+                const bg = role === "user" ? "bg-base-200" : "bg-base-100";
+                const position = role === "user" ? "flex-row-reverse" : "";
+                return (
+                    <div
+                        key={index}
+                        className={`${bg} flex gap-4 ${position} py-6 -mx-8 px-8 text-xl leading-loose border-b border-base-300`}
+                    >
+                        <span className="mr-4">{avatar}</span>
+                        <p className="max-w-3xl">{content}</p>
+                    </div>
+                );
+            })}
+            {isPending ? <span className="loading"></span> : null}
+            <form onSubmit={handleSubmit} className="w-full pt-12">
                 <div className="join w-full">
                     <input
                         type="text"
@@ -24,7 +57,11 @@ function Chat() {
                         required
                         onChange={(e) => setText(e.target.value)}
                     />
-                    <button className="btn btn-primary join-item" type="submit">
+                    <button
+                        className="btn btn-primary join-item"
+                        type="submit"
+                        disabled={isPending}
+                    >
                         ask question
                     </button>
                 </div>
