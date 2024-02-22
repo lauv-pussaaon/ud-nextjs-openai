@@ -63,3 +63,35 @@ export async function createNewTour(tour) {
         data: tour,
     });
 }
+
+export async function getAllTours(searchTerm) {
+    if (!searchTerm) {
+        const tours = await prisma.tour.findMany({
+            orderBy: {
+                city: "asc",
+            },
+        });
+        return tours;
+    } else {
+        const tours = await prisma.tour.findMany({
+            where: {
+                OR: [
+                    {
+                        city: {
+                            contains: searchTerm,
+                        },
+                    },
+                    {
+                        country: {
+                            contains: searchTerm,
+                        },
+                    },
+                ],
+            },
+            orderBy: {
+                city: "asc",
+            },
+        });
+        return tours;
+    }
+}
