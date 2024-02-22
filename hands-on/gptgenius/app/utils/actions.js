@@ -95,3 +95,22 @@ export async function getAllTours(searchTerm) {
         return tours;
     }
 }
+
+export async function getSingleTour(id) {
+    return prisma.tour.findUnique({
+        where: { id },
+    });
+}
+
+export async function generateTourImage({ city, country }) {
+    try {
+        const tourImage = await openai.images.generate({
+            prompt: `a panoramic view of teh ${city} ${country}`,
+            n: 1,
+            size: "512x512",
+        });
+        return tourImage?.data[0]?.url;
+    } catch (error) {
+        return null;
+    }
+}
