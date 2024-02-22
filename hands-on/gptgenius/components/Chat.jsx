@@ -1,18 +1,20 @@
 "use client";
 
 import { generateChatResponse } from "@/app/utils/actions";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 import { useForm } from "react-hook-form";
 
 function Chat() {
     const [messages, setMessages] = useState([]);
+    const inputRef = useRef(null);
 
     const { mutate: submitMessage, isPending } = useMutation({
         mutationFn: (query) => generateChatResponse([...messages, query]),
         onSuccess: (data) => {
             setMessages((prev) => [...prev, data]);
+            focusInput();
         },
         onError: (error) => {
             toast.error(error.message);
@@ -28,12 +30,13 @@ function Chat() {
         reset();
     }
 
-    useEffect(() => {
+    function focusInput() {
         window.scrollTo({
             top: document.body.scrollHeight,
             behavior: "smooth",
         });
-    }, [isPending]);
+        inputRef?.current?.focus();
+    }
 
     return (
         <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]">
@@ -62,6 +65,7 @@ function Chat() {
                 <div className="join w-full">
                     <input
                         type="text"
+                        ref={inputRef}
                         placeholder="Message GeniusGPT"
                         className="input input-bordered join-item w-full"
                         required
