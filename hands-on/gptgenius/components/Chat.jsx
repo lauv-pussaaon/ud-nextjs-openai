@@ -1,5 +1,6 @@
 "use client";
 
+import { submitPrompts } from "@/app/utils/actions";
 import { useState } from "react";
 
 function Chat() {
@@ -7,6 +8,7 @@ function Chat() {
 
     function handleSubmit(e) {
         e.preventDefault();
+        submitPrompts(text);
         setText("");
     }
 
