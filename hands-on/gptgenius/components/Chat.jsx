@@ -1,7 +1,7 @@
 "use client";
 
 import { generateChatResponse } from "@/app/utils/actions";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
@@ -26,6 +26,13 @@ function Chat() {
         setMessages((prev) => [...prev, query]);
         setText("");
     }
+
+    useEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+        });
+    }, [isPending]);
 
     return (
         <div className="min-h-[calc(100vh-6rem)] grid grid-rows-[1fr,auto]">
