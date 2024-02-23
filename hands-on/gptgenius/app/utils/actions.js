@@ -2,6 +2,7 @@
 
 import OpenAI from "openai";
 import prisma from "./db";
+import { revalidatePath } from "next/cache";
 import { generate_tour_program_query } from "./prompts";
 
 const openai = new OpenAI({
@@ -41,7 +42,7 @@ export async function generateTourResponse({ city, country }) {
         });
 
         const tourData = JSON.parse(response.choices[0].message.content);
-        return tourData.tour;
+        return { tour: tourData.tour, tokens: response.usage.total_tokens };
     } catch (error) {
         return null;
     }
@@ -113,4 +114,48 @@ export async function generateTourImage({ city, country }) {
     } catch (error) {
         return null;
     }
+}
+
+export async function fetchUserTokensById(clerkId) {
+    const result = await prisma.token.findUnique({
+        where: {
+            clerkId,
+        },
+    });
+
+    return result?.tokens;
+}
+
+export async function generateUserTokensForId(clerkId) {
+    const result = await prisma.token.create({
+        data: {
+            clerkId,
+        },
+    });
+
+    return result?.tokens;
+}
+
+export async function fetchOrGenerateTokens(clerkId) {
+    const result = await fetchUserTokensById(clerkId);
+    if (result) {
+        return result.tokens;
+    }
+
+    return (await generateUserTokensForId(clerkId)).tokens;
+}
+
+export async function subtractTokens(clerkId, tokens) {
+    const result = await prisma.token.update({
+        where: {
+            clerkId,
+        },
+        data: {
+            tokens: {
+                decrement: tokens,
+            },
+        },
+    });
+    revalidatePath("/profile");
+    return result.tokens;
 }
