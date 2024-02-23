@@ -1,6 +1,6 @@
 "use client";
 
-import { generateChatResponse } from "@/app/utils/actions";
+import { generateChatResponse } from "../app/utils/actions";
 import { useEffect, useState, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
